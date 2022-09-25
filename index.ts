@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
-import config from './config';
 import 'reflect-metadata';
+import config from './config'
 import { ApolloServer } from 'apollo-server-express';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
