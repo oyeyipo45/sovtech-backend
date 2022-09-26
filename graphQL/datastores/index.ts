@@ -32,7 +32,7 @@ class ApiDataSource extends RESTDataSource {
   async getPerson({ search }: any): Promise<PersonResponse> {
     const { results } = await this.get(`/people/?search=${search}`);
 
-    const data: [Person] = this.selectedFields(results);
+    const data: [Person] = results.map((person: Person) => person);
 
     return { data };
   }
