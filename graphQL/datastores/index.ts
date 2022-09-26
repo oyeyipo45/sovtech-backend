@@ -1,5 +1,4 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
-import { URLSearchParams } from 'url';
 import { PersonResponse, Person } from '../interfaces/index';
 
 class ApiDataSource extends RESTDataSource {
@@ -28,6 +27,14 @@ class ApiDataSource extends RESTDataSource {
     return {
       data,
     };
+  }
+
+  async getPerson({ search }: any): Promise<PersonResponse> {
+    const { results } = await this.get(`/people/?search=${search}`);
+
+    const data: [Person] = this.selectedFields(results);
+
+    return { data };
   }
 }
 

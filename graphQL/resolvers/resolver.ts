@@ -10,5 +10,6 @@ export default {
         return error;
       }
     },
+    getPerson: async (_parent: any, args: any, { dataSources }: any) => dataSources.api.getPerson({ search: args.search }),
   },
 };

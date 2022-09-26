@@ -19,6 +19,7 @@ const typeDefs = gql`
 
   type Query {
     getPeople: PeopleResponse
+    getPerson(search: String): PeopleResponse
   }
 `;
 

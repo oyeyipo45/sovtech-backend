@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+
 import 'reflect-metadata';
 import config from './config';
 import { ApolloServer } from 'apollo-server-express';
@@ -33,7 +34,7 @@ const main = async () => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
 
-  app.get('/', (_req, res) => res.send('dfhdhfdhfdkfdfdf'));
+  app.get('/', (_req, res) => res.send('Home'));
 
   app.listen({ port: config.port }, () => console.info(`Server running at http://localhost:${config.port}`));
 };
