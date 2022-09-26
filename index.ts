@@ -1,13 +1,15 @@
 import express, { Express } from 'express';
 import 'reflect-metadata';
-import config from './config'
+import config from './config';
 import { ApolloServer } from 'apollo-server-express';
+import { DataSources } from 'apollo-server-core/dist/graphqlOptions';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-
 import resolvers from './graphQL/resolvers/resolver';
 import typeDefs from './graphQL/schema/schema';
+import ApiDataSource from './graphQL/datastores/index';
+import { swapiDataSources } from './graphQL/interfaces';
 
 const app: Express = express();
 app.use(express.json());
@@ -21,6 +23,9 @@ const main = async () => {
         typeDefs,
       })
     ),
+    dataSources: (): DataSources<swapiDataSources> => ({
+      api: new ApiDataSource(config.baseUrl),
+    }),
     csrfPrevention: true,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });

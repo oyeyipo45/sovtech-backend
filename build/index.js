@@ -21,6 +21,7 @@ const graphql_middleware_1 = require("graphql-middleware");
 const apollo_server_core_1 = require("apollo-server-core");
 const resolver_1 = __importDefault(require("./graphQL/resolvers/resolver"));
 const schema_2 = __importDefault(require("./graphQL/schema/schema"));
+const index_1 = __importDefault(require("./graphQL/datastores/index"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
@@ -30,6 +31,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             resolvers: resolver_1.default,
             typeDefs: schema_2.default,
         })),
+        dataSources: () => ({
+            api: new index_1.default(config_1.default.baseUrl),
+        }),
         csrfPrevention: true,
         plugins: [(0, apollo_server_core_1.ApolloServerPluginLandingPageGraphQLPlayground)()],
     });
