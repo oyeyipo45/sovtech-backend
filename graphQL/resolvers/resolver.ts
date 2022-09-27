@@ -7,7 +7,6 @@ export default {
     },
     getPeople: async (_parent: any, { filter }: any, { dataSources }: any): Promise<PersonResponse | unknown> => {
       try {
-        console.log(dataSources, 'dataSources');
         return await dataSources.api.getAll({ filter });
       } catch (error) {
         return error;

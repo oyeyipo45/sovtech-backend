@@ -27,8 +27,10 @@ const main = async () => {
     dataSources: (): DataSources<swapiDataSources> => ({
       api: new ApiDataSource(config.baseUrl),
     }),
+    cache: 'bounded',
     csrfPrevention: true,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
   });
 
   await apolloServer.start();
