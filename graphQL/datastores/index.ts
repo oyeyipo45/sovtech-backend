@@ -7,8 +7,8 @@ class ApiDataSource extends RESTDataSource {
     this.baseURL = baseUrl;
   }
 
-  async request(): Promise<any> {
-    return await this.get(`/people`);
+  async request(url: any): Promise<any> {
+    return await this.get(`/people/?${url.toString()}`);
   }
 
   selectedFields = (results: any): [Person] =>
@@ -20,22 +20,42 @@ class ApiDataSource extends RESTDataSource {
       homeworld,
     }));
 
-  async getAll(): Promise<PersonResponse> {
-    const { results } = await this.request();
+  async getAll({ filter }: any): Promise<PersonResponse> {
+    const query = {
+      page: filter?.page && filter?.page > 0 ? filter?.page : 1,
+    };
+
+    const filteredQuery = Object.entries(query).reduce((a: any, [k, v]: any) => (v == null ? a : ((a[k] = v), a)), {});
+
+    const cleanQuery = new URLSearchParams(filteredQuery);
+
+    const { count, next, previous, results } = await this.request(cleanQuery);
 
     const data: [Person] = this.selectedFields(results);
     return {
       data,
+      page: {
+        total: count,
+        previous,
+        next,
+      },
     };
   }
 
   async getPerson({ search }: any): Promise<PersonResponse> {
-    const { results } = await this.get(`/people/?search=${search}`);
+    const { count, next, previous, results } = await this.get(`/people/?search=${search}`);
 
     const data: [Person] = results.map((person: Person) => person);
 
-    return { data };
-  }
+    return {
+      data,
+      page: {
+        total: count,
+        previous,
+        next,
+      },
+    };
+  } //  TODO : CLEAN SEARCH QUERY
 }
 
 export default ApiDataSource;

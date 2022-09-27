@@ -11,6 +11,14 @@ const typeDefs = gql`
     gender: String
     height: String
     homeworld: String
+  }
+
+  type SelectedPerson {
+    name: String
+    mass: String
+    gender: String
+    height: String
+    homeworld: String
     hair_color: String
     skin_color: String
     eye_color: String
@@ -23,17 +31,35 @@ const typeDefs = gql`
     url: String
   }
 
-  type PeopleResponse {
-    data: [Person]
+  input PageFilter {
+    "Filter by page"
+    page: Int
   }
 
-  type PersonOrPeopleResponse {
+  type Page {
+    total: Int
+    previous: String
+    next: String
+  }
+
+  input PersonFilter {
+    "Search by name"
+    search: String
+  }
+
+  type PeopleResponse {
     data: [Person]
+    page: Page
+  }
+
+  type PersonResponse {
+    data: [SelectedPerson]
+    page: Page
   }
 
   type Query {
-    getPeople: PeopleResponse
-    getPerson(search: String): PersonOrPeopleResponse
+    getPeople(filter: PageFilter): PeopleResponse
+    getPerson(search: String): PersonResponse
   }
 `;
 
