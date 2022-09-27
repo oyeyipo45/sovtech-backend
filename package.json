@@ -5,6 +5,7 @@
   "author": "damilola oyeyipo",
   "license": "MIT",
   "scripts": {
+    "build": "npx tsc",
     "start": "node build/index.js",
     "dev": "nodemon build/index.js",
     "watch": "tsc -w",
