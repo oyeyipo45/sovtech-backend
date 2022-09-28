@@ -19,3 +19,7 @@ export interface PersonResponse {
 export interface swapiDataSources {
   swapi: any;
 }
+
+export interface Result {
+  filter : Page
+}
