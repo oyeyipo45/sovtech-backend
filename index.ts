@@ -29,8 +29,15 @@ const main = async () => {
     }),
     cache: 'bounded',
     csrfPrevention: true,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground(),
-    ],
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    formatError: (err) => {
+      // Don't give the specific errors to the client
+      if (err.message.startsWith('Database Error: ')) {
+        return new Error('Internal server error');
+      }
+      // Otherwise return the original error
+      return err;
+    },
   });
 
   await apolloServer.start();
