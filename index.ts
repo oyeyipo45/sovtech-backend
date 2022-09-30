@@ -1,5 +1,4 @@
 import express, { Express } from 'express';
-
 import 'reflect-metadata';
 import config from './config';
 import { ApolloServer } from 'apollo-server-express';
@@ -11,6 +10,8 @@ import resolvers from './graphQL/resolvers/resolver';
 import typeDefs from './graphQL/schema/schema';
 import ApiDataSource from './graphQL/datastores/index';
 import { swapiDataSources } from './graphQL/interfaces';
+import { GraphQLError } from 'graphql';
+
 
 const app: Express = express();
 app.use(express.json());
@@ -30,24 +31,33 @@ const main = async () => {
     cache: 'bounded',
     csrfPrevention: true,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
-    formatError: (err) => {
-      // Don't give the specific errors to the client
-      if (err.message.startsWith('Database Error: ')) {
-        return new Error('Internal server error');
+    formatError: (err: GraphQLError) => {
+      return {
+        ...err,
+        message: err.message,
+        locations: err.locations,
+        path: err.path,
+        extensions: err.extensions.code
       }
-      // Otherwise return the original error
-      return err;
-    },
+    }
   });
 
+const startApolloServer = async () => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
+};
+
+startApolloServer()
 
   app.get('/', (_req, res) => res.send('Home'));
 
   app.listen({ port: config.port }, () => console.info(`Server running at http://localhost:${config.port}`));
 };
 
-main().catch((err) => console.error(err));
 
-export default main;
+
+(async () => {
+  await main().catch((err) => console.error(err));
+})();
+
+export default app;

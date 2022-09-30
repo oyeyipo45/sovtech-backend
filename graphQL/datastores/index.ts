@@ -42,7 +42,7 @@ class ApiDataSource extends RESTDataSource {
     };
   }
 
-  //  TODO : CLEAN SEARCH QUERY
+
 
   async getPerson({ search }: any): Promise<PersonResponse> {
     const { count, next, previous, results } = await this.get(`/people/?search=${search}`);
@@ -57,7 +57,7 @@ class ApiDataSource extends RESTDataSource {
         next,
       },
     };
-  } //  TODO : CLEAN SEARCH QUERY
+  }
 }
 
 export default ApiDataSource;
