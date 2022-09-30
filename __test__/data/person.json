@@ -1,0 +1,14 @@
+{
+    "data" : [
+        {
+          "name": "Owen Lars",
+          "height": "178",
+          "mass": "120",
+          "gender": "male",
+          "homeworld": "http://swapi.dev/api/planets/1/"
+        }
+    ],
+    "page" : {
+        
+    } 
+}
